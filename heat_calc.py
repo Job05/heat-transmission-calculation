@@ -269,7 +269,7 @@ HEATING_SYSTEMS = {
     'Vloerverwarming (θ_vloer ≥ 27°C) als hoofdverwarming': (0.0, -1.0),
     'Vloerverwarming (θ_vloer < 27°C) als hoofdverwarming': (0.0, -0.5),
     'Vloerverwarming en wandverwarming':                    (1.0,  -1.0),
-    'Ventilatorgedreven convectoren/radiatoren':             (0.5,  0.0),
+    'Ventilatorgedreven convectoren/radiatoren':              (0.5,  0.0),
 }
 
 # ── Table §12 – Design indoor temperatures θ_i ──────────────────────────────
@@ -363,8 +363,7 @@ def calculate_fk_formula(theta_i, theta_e, theta_a, component,
     if denom == 0:
         raise ValueError("θ_i en θ_e mogen niet gelijk zijn (deler = 0)")
 
-    dth = get_delta_theta(heating_system, component) if component.lower() in (
-        'vloer', 'plafond') else 0.0
+    dth = get_delta_theta(heating_system, component.lower())
 
     fk = ((theta_i + dth) - theta_a) / denom
     return fk
