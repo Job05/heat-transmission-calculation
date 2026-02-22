@@ -1,6 +1,7 @@
 """heat_calc.py – Computation logic for the U-value / heat-transmission calculator.
 
-Contains constants, material look-up helpers, and the LayerWidget class.
+Contains constants, material look-up helpers, the LayerWidget class,
+and the f_k / f_ig,k correction-factor calculations.
 Import this module from the notebook to keep the notebook concise and readable.
 """
 
@@ -239,3 +240,389 @@ class LayerWidget:
             'lam':  f'{lam:.4f}' if lam else '—',
             'R':    r,
         }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# f_k / f_ig,k  –  Correction-factor calculations
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── Standard temperatures for the Netherlands ─────────────────────────────────
+
+THETA_E_DEFAULT = -10.0    # Ontwerpbuitentemperatuur [°C]
+THETA_ME_DEFAULT = 10.5    # Jaarlijks gemiddelde buitentemperatuur [°C]
+
+# ── Table 2.12 – Temperature corrections Δθ ──────────────────────────────────
+# Keys are the heating-system descriptions (Dutch).
+# Values are (Δθ_1, Δθ_2) in Kelvin.
+
+HEATING_SYSTEMS = {
+    'Gashaard, gevelkachel etc.':                           (4.0,  -1.0),
+    'IR-panelen wandmontage':                               (1.0,  -0.5),
+    'IR-panelen plafondmontage':                            (0.0,   0.0),
+    'Radiatoren/convectoren Ht + luchtverwarming':          (3.0,  -1.0),
+    'Radiatoren/convectoren Lt':                            (2.0,  -1.0),
+    'Plafondverwarming':                                    (3.0,   0.0),
+    'Wandverwarming':                                       (2.0,  -1.0),
+    'Plintverwarming':                                      (1.0,   0.0),
+    'Vloerverwarming + Ht-radiatoren/convectoren':          (3.0,   0.0),
+    'Vloerverwarming + Lt-radiatoren/convectoren':          (2.0,  -1.0),
+    'Vloerverwarming (θ_vloer ≥ 27°C) als hoofdverwarming': (0.0, -1.0),
+    'Vloerverwarming (θ_vloer < 27°C) als hoofdverwarming': (0.0, -0.5),
+    'Vloerverwarming en wandverwarming':                    (1.0,  -1.0),
+    'Ventilatorgedreven convectoren/radiatoren':             (0.5,  0.0),
+}
+
+# ── Table §12 – Design indoor temperatures θ_i ──────────────────────────────
+
+ROOM_TEMPERATURES_WOON = {
+    'Verblijfsruimte':                                          22,
+    'Badruimte':                                                22,
+    'Verkeersruimte (hal, overloop, gang, trap)':               20,
+    'Toiletruimte':                                             18,
+    'Technische ruimte (niet zijnde stookruimte)':              15,
+    'Bergruimte':                                               15,
+    'Onbenoemde ruimte open verbinding met verkeersruimte':     20,
+    'Inpandige bergruimte (bijv. afgesloten zolder)':           15,
+}
+
+ROOM_TEMPERATURES_SENIOREN = {
+    'Verblijfsruimte':  22,
+    'Badruimte':        22,
+    'Toiletruimte':     20,
+    'Verkeersruimte':   20,
+    'Technische ruimte': 15,
+}
+
+
+# ── Helpers for Δθ lookup ─────────────────────────────────────────────────────
+
+def get_delta_theta(heating_system, component):
+    """Return the temperature correction Δθ for a heating system and component.
+
+    Parameters
+    ----------
+    heating_system : str
+        Key in :data:`HEATING_SYSTEMS`.
+    component : str
+        ``'plafond'`` → Δθ_1, ``'vloer'`` → Δθ_2, ``'wand'`` → 0.
+
+    Returns
+    -------
+    float
+        Temperature correction [K].
+
+    Raises
+    ------
+    ValueError
+        If *heating_system* is not recognised or *component* is invalid.
+    """
+    component = component.lower()
+    if component == 'wand':
+        return 0.0
+    if heating_system not in HEATING_SYSTEMS:
+        raise ValueError(f"Onbekend verwarmingssysteem: {heating_system!r}")
+    dth1, dth2 = HEATING_SYSTEMS[heating_system]
+    if component == 'plafond':
+        return dth1
+    if component == 'vloer':
+        return dth2
+    raise ValueError(f"Ongeldig bouwdeeltype: {component!r} "
+                     "(verwacht 'wand', 'vloer' of 'plafond')")
+
+
+# ── Scenario A – f_k via formula (θ_a known) ─────────────────────────────────
+
+def calculate_fk_formula(theta_i, theta_e, theta_a, component,
+                         heating_system=None):
+    """Calculate f_k using formula 2.22 / 2.23 / 2.24.
+
+    Parameters
+    ----------
+    theta_i : float
+        Design indoor temperature [°C].
+    theta_e : float
+        Design outdoor temperature [°C].
+    theta_a : float
+        Temperature of the adjacent unheated space [°C].
+    component : str
+        ``'wand'``, ``'vloer'`` or ``'plafond'``.
+    heating_system : str or None
+        Required when *component* is ``'vloer'`` or ``'plafond'``.
+
+    Returns
+    -------
+    float
+        Correction factor f_k [-].
+
+    Raises
+    ------
+    ValueError
+        If inputs are invalid or the denominator is zero.
+    """
+    denom = theta_i - theta_e
+    if denom == 0:
+        raise ValueError("θ_i en θ_e mogen niet gelijk zijn (deler = 0)")
+
+    dth = get_delta_theta(heating_system, component) if component.lower() in (
+        'vloer', 'plafond') else 0.0
+
+    fk = ((theta_i + dth) - theta_a) / denom
+    return fk
+
+
+# ── Scenario B – f_k from Table 2.3 (θ_a unknown, heat-loss) ─────────────────
+
+def lookup_fk_table_2_3(category, **kwargs):
+    """Look up f_k from Table 2.3 for the heat-loss calculation.
+
+    Parameters
+    ----------
+    category : str
+        One of ``'vertrek'``, ``'dak'``, ``'verkeersruimte'``,
+        ``'kruipruimte'``.
+    **kwargs
+        Extra arguments depending on the category (see below).
+
+    Keyword Arguments
+    -----------------
+    external_walls : int
+        Number of external walls (1 / 2 / 3). For *vertrek*.
+    exterior_door : bool
+        Whether an exterior door is present (only for *vertrek* with 2 walls).
+    roof_type : str
+        ``'pannendak_zonder_folie'``, ``'niet_geisoleerd'`` or
+        ``'geisoleerd'``. For *dak*.
+    has_exterior_walls : bool
+        Whether the space has exterior walls. For *verkeersruimte*.
+    ventilation_rate : float
+        Air-change rate [-]. For *verkeersruimte*.
+    a_opening_v : float
+        Opening-area / volume ratio [-]. For *verkeersruimte*.
+    opening_size : float or str
+        Opening size in mm²/m² (float) **or** one of ``'zwak'``,
+        ``'matig'``, ``'sterk'``. For *kruipruimte*.
+
+    Returns
+    -------
+    float
+        f_k table value.
+
+    Raises
+    ------
+    ValueError
+        If the category or sub-parameters are not valid.
+    """
+    cat = category.lower()
+
+    # ── Category 1: Vertrek / ruimte ──
+    if cat == 'vertrek':
+        walls = kwargs.get('external_walls', 1)
+        door  = kwargs.get('exterior_door', False)
+        if walls >= 3:
+            return 0.8
+        if walls == 2:
+            return 0.6 if door else 0.5
+        return 0.4  # 1 wall
+
+    # ── Category 2: Ruimte onder het dak ──
+    if cat == 'dak':
+        roof = kwargs.get('roof_type', '')
+        if roof == 'pannendak_zonder_folie':
+            return 1.0
+        if roof == 'niet_geisoleerd':
+            return 0.9
+        if roof == 'geisoleerd':
+            return 0.7
+        raise ValueError(f"Ongeldig daktype: {roof!r}")
+
+    # ── Category 3: Gemeenschappelijke verkeersruimte ──
+    if cat == 'verkeersruimte':
+        has_ext = kwargs.get('has_exterior_walls', True)
+        vent    = kwargs.get('ventilation_rate', 0.0)
+        a_v     = kwargs.get('a_opening_v', 0.0)
+
+        if not has_ext and vent < 0.5:
+            return 0.0
+        if a_v > 0.005:
+            return 1.0
+        return 0.5
+
+    # ── Category 4: Vloer boven kruipruimte ──
+    if cat == 'kruipruimte':
+        size = kwargs.get('opening_size', 0)
+        if isinstance(size, str):
+            size = size.lower()
+            if size == 'zwak':
+                return 0.6
+            if size == 'matig':
+                return 0.8
+            if size == 'sterk':
+                return 1.0
+            raise ValueError(f"Ongeldige ventilatiegraad: {size!r}")
+        # numeric mm²/m²
+        if size <= 1000:
+            return 0.6
+        if size <= 1500:
+            return 0.8
+        return 1.0
+
+    raise ValueError(f"Onbekende categorie: {category!r}")
+
+
+# ── Scenario C – f_k from Table 2.13 (time constant) ─────────────────────────
+
+TABLE_2_13 = {
+    'kelder':       0.5,
+    'stallingsruimte': 1.0,
+    'kruipruimte':  0.8,
+    'serre':        0.8,
+    'trappenhuis':  0.8,
+}
+
+
+def lookup_fk_table_2_13(space_type):
+    """Look up f_k from Table 2.13 for the time-constant calculation.
+
+    Parameters
+    ----------
+    space_type : str
+        Type of adjacent unheated space.  Accepted values:
+        ``'kelder'``, ``'stallingsruimte'``, ``'kruipruimte'``,
+        ``'serre'``, ``'trappenhuis'``.
+
+    Returns
+    -------
+    float
+        f_k table value.
+    """
+    key = space_type.lower()
+    if key not in TABLE_2_13:
+        raise ValueError(
+            f"Onbekend ruimtetype: {space_type!r}. "
+            f"Kies uit: {', '.join(TABLE_2_13)}"
+        )
+    return TABLE_2_13[key]
+
+
+# ── f_gw – Groundwater correction factor (§7) ────────────────────────────────
+
+def get_f_gw(groundwater_depth):
+    """Return the groundwater correction factor f_gw.
+
+    Parameters
+    ----------
+    groundwater_depth : float
+        Depth of the groundwater table below the floor level [m].
+
+    Returns
+    -------
+    float
+        1.00 if depth ≥ 1 m, otherwise 1.15.
+    """
+    return 1.0 if groundwater_depth >= 1.0 else 1.15
+
+
+# ── Scenario E – f_ig,k via formula (§9) ─────────────────────────────────────
+
+def calculate_fig_k(theta_i, theta_e, theta_me, component,
+                    heating_system=None, heated_element_on_ground=False):
+    """Calculate f_ig,k using formula 2.27 (wall) or 2.28 (floor).
+
+    Parameters
+    ----------
+    theta_i : float
+        Design indoor temperature [°C].
+    theta_e : float
+        Design outdoor temperature [°C].
+    theta_me : float
+        Annual mean outdoor temperature [°C].
+    component : str
+        ``'wand'`` or ``'vloer'``.
+    heating_system : str or None
+        Required when *component* is ``'vloer'``.
+    heated_element_on_ground : bool
+        If True the element is heated by floor/wall heating in direct contact
+        with the ground → f_ig,k = 0.
+
+    Returns
+    -------
+    float
+        Correction factor f_ig,k [-].
+    """
+    if heated_element_on_ground:
+        return 0.0
+
+    component = component.lower()
+    if component not in ('wand', 'vloer'):
+        raise ValueError(f"f_ig,k is niet van toepassing op '{component}'. "
+                         "Gebruik 'wand' of 'vloer'.")
+
+    denom = theta_i - theta_e
+    if denom == 0:
+        raise ValueError("θ_i en θ_e mogen niet gelijk zijn (deler = 0)")
+
+    if component == 'wand':
+        return (theta_i - theta_me) / denom
+
+    # vloer – needs Δθ_2
+    dth2 = get_delta_theta(heating_system, 'vloer')
+    return ((theta_i + dth2) - theta_me) / denom
+
+
+# ── Scenario F – U_equiv,k from R_c (§10) ────────────────────────────────────
+
+def get_u_equiv_k(r_c):
+    """Return U_equiv,k based on the construction R_c.
+
+    Parameters
+    ----------
+    r_c : float
+        Thermal resistance of the construction in contact with the ground
+        [m²·K/W].
+
+    Returns
+    -------
+    float
+        Equivalent U-value [W/(m²·K)].
+    """
+    if r_c >= 5.0:
+        return 0.13
+    if r_c >= 3.5:
+        return 0.18
+    if r_c >= 2.5:
+        return 0.30
+    return 0.50
+
+
+# ── Combined ground heat-loss H_T,ig (§9 step E5) ────────────────────────────
+
+def calculate_h_t_ig(area, u_equiv_k, f_ig_k, f_gw):
+    """Calculate the specific heat loss through the ground.
+
+    Parameters
+    ----------
+    area : float
+        Construction area A [m²].
+    u_equiv_k : float
+        Equivalent U-value [W/(m²·K)].
+    f_ig_k : float
+        Ground correction factor [-].
+    f_gw : float
+        Groundwater correction factor [-].
+
+    Returns
+    -------
+    float
+        H_T,ig [W/K].
+    """
+    return area * u_equiv_k * f_ig_k * f_gw
+
+
+# ── Validation helpers ────────────────────────────────────────────────────────
+
+def validate_fk(value):
+    """Check that f_k is in [0, 1]; return a warning string or None."""
+    if value < 0.0 or value > 1.0:
+        return (f"f_k = {value:.4f} valt buiten het verwachte bereik "
+                "[0,0 – 1,0]. Controleer de invoerwaarden.")
+    return None
