@@ -1,0 +1,162 @@
+{
+  "beton": {
+    "gewapend_beton": 1.7,
+    "ongewapend_beton": 1.3
+  },
+  "gassen": {
+    "droge_lucht": [0.025, 0.026],
+    "argon": 0.016,
+    "krypton": 0.0088,
+    "koolstofdioxide_CO2": 0.0146,
+    "stikstof_N2": 0.024
+  },
+  "hout": {
+    "timmerhout": [0.13, 0.18],
+    "multiplexplaat": [0.09, 0.24],
+    "spaanplaat": [0.10, 0.18],
+    "cementgebonden_vezelplaat": 0.23,
+    "OSB_plaat": 0.13,
+    "vezelplaat": [0.07, 0.18]
+  },
+  "isolatie": {
+    "vacuum_isolatie_panelen_VIP": 0.007,
+    "resolhardschuim": [0.018, 0.020],
+    "PUR": [0.022, 0.028],
+    "PIR": [0.022, 0.026],
+    "EPS_geëxpandeerd_polystyreen": 0.035,
+    "XPS_geëxtrudeerd_polystyreen": [0.028, 0.035],
+    "glasswol": 0.040,
+    "rotswol": 0.044,
+    "cellenglas": 0.040,
+    "papiervlokken": 0.045,
+    "kurk": 0.038,
+    "hennep": 0.040,
+    "vlas": 0.040,
+    "schapenwol": [0.035, 0.040],
+    "kokosvezel": 0.045,
+    "stro": 0.058,
+    "katoen": 0.040,
+    "EPS_tempex_80mm": 0.036,
+    "EPS_tempex_100mm": 0.035
+  },
+  "kunststoffen": {
+    "HDPE": [0.42, 0.51],
+    "LDPE": 0.33,
+    "PMMA": [0.17, 0.25],
+    "PP": [0.10, 0.22],
+    "PTFE": 0.25,
+    "PVC": 0.19
+  },
+  "metalen": {
+    "lood": 35,
+    "koper": 380,
+    "koper_geelkoper_messing": 120,
+    "staal": 50,
+    "roestvrij_staal": 17,
+    "aluminium_99%": 160,
+    "gietijzer": 50,
+    "zink": 110,
+    "brons": 65
+  },
+  "pleisters": {
+    "cementmortel": 0.93,
+    "kalkmortel": 0.7,
+    "gips": 0.52
+  },
+  "stenen": {
+    "zware_steen": 3.5,
+    "blauwsteen_kalksteen": 2.91,
+    "marmer": 2.94,
+    "harde_steen": 2.21,
+    "vaste_steen": 1.74,
+    "halfvaste_steen": 1.4,
+    "bakstenen": [0.2, 0.81],
+    "kalkzandsteen": [0.36, 1.70],
+    "betonmetselblokken": [0.10, 0.29],
+    "betonstenen_van_klei": [0.14, 0.32],
+    "cellenbetonblokken": 0.32,
+    "A2_Poriso": 0.43,
+    "A3_Isolatieblokken": 0.40,
+    "B1_Rood": [0.45, 0.65],
+    "B2_Boerengrauw": 0.70,
+    "B3_Hardgrauw": [0.65, 0.85],
+    "B4_Gevelklinkers": [0.80, 0.90],
+    "gasbeton_Ytong_07": 0.075
+  },
+  "andere_anorganische_materialen": {
+    "gipskartonplaat": [0.21, 0.46],
+    "cellulair_glass": [0.036, 0.060],
+    "minerale_wol_dekens": [0.036, 0.041],
+    "minerale_wol_platen": [0.034, 0.036]
+  },
+  "tegels": {
+    "hardgebakken_tegels": 1.2
+  },
+  "houtproducten": {
+    "hardhout_tri_en_multiplex": 0.17,
+    "naaldhout": 0.14,
+    "hardboard": 0.29,
+    "houtcementplaat": [0.09, 0.21]
+  },
+  "kunststofschuimen": {
+    "polystyreenschuim_geëxpandeerd": 0.035,
+    "polystyreenschuim_geëxtrudeerd": 0.027,
+    "polyurethaan_en_polyisocyanuraatschuim": [0.026, 0.035]
+  },
+  "vloeren": {
+    "1965_1975": 0.17,
+    "1975_1983": 0.52,
+    "1983_1988": 1.3,
+    "1988_1992": 1.3,
+    "1992_2014": 2.5,
+    "2014_2021": 3.5,
+    "vanaf_2021": 3.7
+  },
+  "glas": {
+    "drievoudig_HR_glass": {
+      "hout_kunststof": 1.3,
+      "metaal_thermisch_onderbroken": 1.6,
+      "metaal_niet_thermisch_onderbroken": 2.2
+    },
+    "HR++": {
+      "hout_kunststof": 1.5,
+      "metaal_thermisch_onderbroken": 1.9,
+      "metaal_niet_thermisch_onderbroken": 2.4
+    },
+    "HR+": {
+      "hout_kunststof": 1.7,
+      "metaal_thermisch_onderbroken": 2.1,
+      "metaal_niet_thermisch_onderbroken": 2.6
+    },
+    "HR_glass_dubbel_met_coating": {
+      "hout_kunststof": 1.9,
+      "metaal_thermisch_onderbroken": 2.2,
+      "metaal_niet_thermisch_onderbroken": 2.7
+    },
+    "dubbel_glass_zonder_coating": {
+      "hout_kunststof": 2.3,
+      "metaal_thermisch_onderbroken": 2.5,
+      "metaal_niet_thermisch_onderbroken": 3.0
+    },
+    "voorzetraam": {
+      "hout_kunststof": 2.3,
+      "metaal_thermisch_onderbroken": 2.5,
+      "metaal_niet_thermisch_onderbroken": 3.0
+    },
+    "enkel_glass": {
+      "hout_kunststof": 3.5,
+      "metaal_thermisch_onderbroken": 3.6,
+      "metaal_niet_thermisch_onderbroken": 4.0
+    }
+  },
+  "deuren": {
+    "geïsoleerde_deur": {
+      "buitenlucht": 2.0,
+      "aangrenzende_ruimte": 1.7
+    },
+    "ongeïsoleerde_deur": {
+      "buitenlucht": 3.4,
+      "aangrenzende_ruimte": 2.7
+    }
+  }
+}
