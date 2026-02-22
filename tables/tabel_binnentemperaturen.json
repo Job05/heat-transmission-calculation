@@ -1,0 +1,78 @@
+{
+  "eenheid": "°C",
+  "standaard_nl": {
+    "theta_e_C": -10.0,
+    "theta_e_omschrijving": "Ontwerpbuitentemperatuur",
+    "theta_me_C": 10.5,
+    "theta_me_omschrijving": "Jaarlijks gemiddelde buitentemperatuur (voor grondberekeningen)"
+  },
+  "woonfunctie": [
+    {
+      "id": "verblijfsruimte",
+      "omschrijving": "Verblijfsruimte",
+      "theta_i_C": 22
+    },
+    {
+      "id": "badruimte",
+      "omschrijving": "Badruimte",
+      "theta_i_C": 22
+    },
+    {
+      "id": "verkeersruimte",
+      "omschrijving": "Verkeersruimte (hal, overloop, gang, trap)",
+      "theta_i_C": 20
+    },
+    {
+      "id": "toiletruimte",
+      "omschrijving": "Toiletruimte",
+      "theta_i_C": 18
+    },
+    {
+      "id": "technische_ruimte",
+      "omschrijving": "Technische ruimte (niet zijnde stookruimte)",
+      "theta_i_C": 15
+    },
+    {
+      "id": "bergruimte",
+      "omschrijving": "Bergruimte",
+      "theta_i_C": 15
+    },
+    {
+      "id": "open_zolder",
+      "omschrijving": "Onbenoemde ruimte met open verbinding met verkeersruimte (bijv. open zolder)",
+      "theta_i_C": 20
+    },
+    {
+      "id": "afgesloten_zolder",
+      "omschrijving": "Inpandige bergruimte (bijv. afgesloten zolder)",
+      "theta_i_C": 15
+    }
+  ],
+  "seniorenwoningen_verzorgingstehuizen": [
+    {
+      "id": "verblijfsruimte",
+      "omschrijving": "Verblijfsruimte",
+      "theta_i_C": 22
+    },
+    {
+      "id": "badruimte",
+      "omschrijving": "Badruimte",
+      "theta_i_C": 22
+    },
+    {
+      "id": "toiletruimte",
+      "omschrijving": "Toiletruimte",
+      "theta_i_C": 20
+    },
+    {
+      "id": "verkeersruimte",
+      "omschrijving": "Verkeersruimte",
+      "theta_i_C": 20
+    },
+    {
+      "id": "technische_ruimte",
+      "omschrijving": "Technische ruimte",
+      "theta_i_C": 15
+    }
+  ]
+}

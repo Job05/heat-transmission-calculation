@@ -1,0 +1,20 @@
+{
+  "doel": "f_k uitsluitend bij bepaling tijdconstante van een gebouw",
+  "waarden": [
+    {
+      "aangrenzende_ruimte": "kelder",
+      "omschrijving": "Kelder",
+      "f_k": 0.5
+    },
+    {
+      "aangrenzende_ruimte": "stallingsruimte",
+      "omschrijving": "Stallingsruimte",
+      "f_k": 1.0
+    },
+    {
+      "aangrenzende_ruimte": "kruipruimte_serre_trappenhuis",
+      "omschrijving": "Kruipruimte, serre, trappenhuis",
+      "f_k": 0.8
+    }
+  ]
+}

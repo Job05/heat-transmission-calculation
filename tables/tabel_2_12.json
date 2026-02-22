@@ -1,0 +1,106 @@
+{
+  "doel": "Bepaling van Δθ_1 (plafonds) en Δθ_2 (vloeren) per verwarmingssysteem",
+  "toepassingsgebied": "Ruimten met een maximale hoogte van 4 m",
+  "gebruik": {
+    "delta_theta_1": "Plafonds – Formules 2.8, 2.13, 2.19, 2.24",
+    "delta_theta_2": "Vloeren – Formules 2.7, 2.12, 2.18, 2.23, 2.28"
+  },
+  "categorieen": [
+    {
+      "categorie": "lokale_verwarming",
+      "systemen": [
+        {
+          "id": "gashaard_gevelkachel",
+          "omschrijving": "Gashaard, gevelkachel etc.",
+          "delta_theta_1_K": 4,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "ir_panelen_wand",
+          "omschrijving": "IR-panelen wandmontage",
+          "delta_theta_1_K": 1,
+          "delta_theta_2_K": -0.5
+        },
+        {
+          "id": "ir_panelen_plafond",
+          "omschrijving": "IR-panelen plafondmontage",
+          "delta_theta_1_K": 0,
+          "delta_theta_2_K": 0
+        }
+      ]
+    },
+    {
+      "categorie": "centrale_verwarming in ruimten",
+      "systemen": [
+        {
+          "id": "radiatoren_ht_lucht",
+          "omschrijving": "Radiatoren/convectoren Ht + luchtverwarming",
+          "delta_theta_1_K": 3,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "radiatoren_lt",
+          "omschrijving": "Radiatoren/convectoren Lt",
+          "delta_theta_1_K": 2,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "plafondverwarming",
+          "omschrijving": "Plafondverwarming",
+          "delta_theta_1_K": 3,
+          "delta_theta_2_K": 0
+        },
+        {
+          "id": "wandverwarming",
+          "omschrijving": "Wandverwarming",
+          "delta_theta_1_K": 2,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "plintverwarming",
+          "omschrijving": "Plintverwarming",
+          "delta_theta_1_K": 1,
+          "delta_theta_2_K": 0
+        },
+        {
+          "id": "vloerverwarming_ht_radiatoren",
+          "omschrijving": "Vloerverwarming + Ht-radiatoren/convectoren",
+          "delta_theta_1_K": 3,
+          "delta_theta_2_K": 0
+        },
+        {
+          "id": "vloerverwarming_lt_radiatoren",
+          "omschrijving": "Vloerverwarming + Lt-radiatoren/convectoren",
+          "delta_theta_1_K": 2,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "vloerverwarming_hoog_hoofd",
+          "omschrijving": "Vloerverwarming (θ_vloer ≥ 27°C) als hoofdverwarming",
+          "theta_vloer_min_C": 27,
+          "delta_theta_1_K": 0,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "vloerverwarming_laag_hoofd",
+          "omschrijving": "Vloerverwarming (θ_vloer < 27°C) als hoofdverwarming",
+          "theta_vloer_max_C": 27,
+          "delta_theta_1_K": 0,
+          "delta_theta_2_K": -0.5
+        },
+        {
+          "id": "vloerverwarming_wandverwarming",
+          "omschrijving": "Vloerverwarming en wandverwarming",
+          "delta_theta_1_K": 1,
+          "delta_theta_2_K": -1
+        },
+        {
+          "id": "ventilatorconvectoren",
+          "omschrijving": "Ventilatorgedreven convectoren/radiatoren",
+          "delta_theta_1_K": 0.5,
+          "delta_theta_2_K": 0
+        }
+      ]
+    }
+  ]
+}

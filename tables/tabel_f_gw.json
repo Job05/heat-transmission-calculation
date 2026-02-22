@@ -1,0 +1,20 @@
+{
+  "doel": "Correctie voor warmteoverdracht naar de bodem via grondwater",
+  "invoer": {
+    "grondwaterdiepte_onder_vloer_m": "getal [m]  (diepte grondwaterspiegel t.o.v. vloerniveau)"
+  },
+  "waarden": [
+    {
+      "conditie": "diep_grondwater",
+      "grondwaterdiepte_onder_vloer_m_min": 1.0,
+      "omschrijving": "Grondwaterspiegel ≥ 1 m onder het vloerniveau",
+      "f_gw": 1.00
+    },
+    {
+      "conditie": "ondiep_of_onbekend_grondwater",
+      "grondwaterdiepte_onder_vloer_m_max": 1.0,
+      "omschrijving": "Overige gevallen – grondwater < 1 m onder vloer of onbekend",
+      "f_gw": 1.15
+    }
+  ]
+}

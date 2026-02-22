@@ -1,0 +1,119 @@
+{
+  "dak": {
+    "doel": "f_k voor warmteverliesberekening (θ_a onbekend)",
+    "invoer": {
+      "daktype": "pannendak_zonder_folie | niet_geisoleerd | geisoleerd"
+    },
+    "waarden": [
+      {
+        "daktype": "pannendak_zonder_folie",
+        "omschrijving": "Hoog infiltratievoud; pannendak zonder folielaag",
+        "f_k": 1.0
+      },
+      {
+        "daktype": "niet_geisoleerd",
+        "omschrijving": "Overige niet-geïsoleerde daken",
+        "f_k": 0.9
+      },
+      {
+        "daktype": "geisoleerd",
+        "omschrijving": "Geïsoleerde daken",
+        "f_k": 0.7
+      }
+    ]
+  },
+  "kruipruimte": {
+    "doel": "f_k voor warmteverliesberekening (θ_a onbekend)",
+    "invoer": {
+      "openingsgrootte_mm2_per_m2": "getal [mm²/m²]  (openingsgrootte in de gevel van de kruipruimte)"
+    },
+    "waarden": [
+      {
+        "ventilatiegraad": "zwak",
+        "openingsgrootte_mm2_per_m2_max": 1000,
+        "omschrijving": "Zwak geventileerd – openingen ≤ 1.000 mm²/m²",
+        "f_k": 0.6
+      },
+      {
+        "ventilatiegraad": "matig",
+        "openingsgrootte_mm2_per_m2_min": 1000,
+        "openingsgrootte_mm2_per_m2_max": 1500,
+        "omschrijving": "Matig geventileerd – openingen > 1.000 en ≤ 1.500 mm²/m²",
+        "f_k": 0.8
+      },
+      {
+        "ventilatiegraad": "sterk",
+        "openingsgrootte_mm2_per_m2_min": 1500,
+        "omschrijving": "Sterk geventileerd – openingen > 1.500 mm²/m²",
+        "f_k": 1.0
+      }
+    ]
+  },
+  "verkeersruimte": {
+    "doel": "f_k voor warmteverliesberekening (θ_a onbekend)",
+    "invoer": {
+      "heeft_buitenwanden": "true | false",
+      "ventilatievoud": "getal [-]",
+      "A_opening_per_V": "getal [-]  (verhouding opening tot volume)"
+    },
+    "waarden": [
+      {
+        "conditie": "geen_buitenwanden_en_laag_ventilatievoud",
+        "heeft_buitenwanden": false,
+        "ventilatievoud_max": 0.5,
+        "A_opening_per_V": null,
+        "omschrijving": "Interne ruimte zonder buitenwanden en ventilatievoud < 0,5",
+        "f_k": 0.0
+      },
+      {
+        "conditie": "vrij_geventileerd",
+        "heeft_buitenwanden": null,
+        "ventilatievoud_min": null,
+        "A_opening_per_V_min": 0.005,
+        "omschrijving": "Vrij geventileerd (A_opening / V > 0,005)",
+        "f_k": 1.0
+      },
+      {
+        "conditie": "overig",
+        "heeft_buitenwanden": null,
+        "ventilatievoud": null,
+        "A_opening_per_V": null,
+        "omschrijving": "Overige gevallen",
+        "f_k": 0.5
+      }
+    ]
+  },
+  "vertrek": {
+    "doel": "f_k voor warmteverliesberekening (θ_a onbekend)",
+    "invoer": {
+      "aantal_externe_scheidingsconstructies": "1 | 2 | 3+",
+      "buitendeur_aanwezig": "true | false  (alleen relevant bij 2 constructies)"
+    },
+    "waarden": [
+      {
+        "aantal_externe_scheidingsconstructies": 1,
+        "buitendeur_aanwezig": null,
+        "omschrijving": "1 externe scheidingsconstructie / buitenwand",
+        "f_k": 0.4
+      },
+      {
+        "aantal_externe_scheidingsconstructies": 2,
+        "buitendeur_aanwezig": false,
+        "omschrijving": "2 externe scheidingsconstructies – zonder buitendeur",
+        "f_k": 0.5
+      },
+      {
+        "aantal_externe_scheidingsconstructies": 2,
+        "buitendeur_aanwezig": true,
+        "omschrijving": "2 externe scheidingsconstructies – met buitendeur",
+        "f_k": 0.6
+      },
+      {
+        "aantal_externe_scheidingsconstructies": "3+",
+        "buitendeur_aanwezig": null,
+        "omschrijving": "3 of meer externe scheidingsconstructies",
+        "f_k": 0.8
+      }
+    ]
+  }
+}

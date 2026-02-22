@@ -1,0 +1,33 @@
+{
+  "doel": "Bepaling van U_equiv,k op basis van R_c van de constructie in contact met de grond",
+  "invoer": {
+    "R_c_m2KperW": "getal [m²·K/W]  (warmteweerstand van de constructie in contact met de grond)"
+  },
+  "eenheid_uitvoer": "W/(m²·K)",
+  "waarden": [
+    {
+      "R_c_min_m2KperW": 5.0,
+      "R_c_max_m2KperW": null,
+      "omschrijving": "R_c ≥ 5 m²·K/W",
+      "U_equiv_k_W_per_m2K": 0.13
+    },
+    {
+      "R_c_min_m2KperW": 3.5,
+      "R_c_max_m2KperW": 5.0,
+      "omschrijving": "3,5 ≤ R_c < 5 m²·K/W",
+      "U_equiv_k_W_per_m2K": 0.18
+    },
+    {
+      "R_c_min_m2KperW": 2.5,
+      "R_c_max_m2KperW": 3.5,
+      "omschrijving": "2,5 ≤ R_c < 3,5 m²·K/W",
+      "U_equiv_k_W_per_m2K": 0.30
+    },
+    {
+      "R_c_min_m2KperW": null,
+      "R_c_max_m2KperW": 2.5,
+      "omschrijving": "R_c < 2,5 m²·K/W",
+      "U_equiv_k_W_per_m2K": 0.50
+    }
+  ]
+}
