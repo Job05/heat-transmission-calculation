@@ -4,7 +4,10 @@ Contains constants, material look-up helpers, and the LayerWidget class.
 Import this module from the notebook to keep the notebook concise and readable.
 """
 
-import ipywidgets as widgets
+try:
+    import ipywidgets as widgets
+except ImportError:  # allow import of helpers without ipywidgets (e.g. desktop app)
+    widgets = None
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
