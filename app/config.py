@@ -25,10 +25,10 @@ _DEFAULTS: dict[str, Any] = {
 
 # Lettergrootte in pixels per schaaloptie (voor de instellingen)
 SCALE_FONT_SIZES: dict[str, int] = {
-    "Klein": 13,
-    "Normaal": 15,
-    "Groot": 17,
-    "Extra groot": 20,
+    "Klein": 15,
+    "Normaal": 17,
+    "Groot": 20,
+    "Extra groot": 23,
 }
 
 

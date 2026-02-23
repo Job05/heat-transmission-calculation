@@ -38,18 +38,18 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #272c34;
     color: #ffffff;
-    padding: 10px 22px;
+    padding: 10px 24px;
     border: 1px solid #3a3f4b;
     border-bottom: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     margin-right: 2px;
     font-size: {fs}px;
+    font-weight: bold;
 }}
 QTabBar::tab:selected {{
     background: #1c2026;
     color: #ff6d00;
-    font-weight: bold;
     border-bottom: 2px solid #ff6d00;
 }}
 QTabBar::tab:hover:!selected {{
@@ -202,18 +202,18 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #d6d6d6;
     color: #1a1a1a;
-    padding: 10px 22px;
+    padding: 10px 24px;
     border: 1px solid #999999;
     border-bottom: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     margin-right: 2px;
     font-size: {fs}px;
+    font-weight: bold;
 }}
 QTabBar::tab:selected {{
     background: #f0f0f0;
     color: #e65100;
-    font-weight: bold;
     border-bottom: 2px solid #e65100;
 }}
 QTabBar::tab:hover:!selected {{

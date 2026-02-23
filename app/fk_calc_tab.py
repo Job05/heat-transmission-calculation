@@ -93,7 +93,7 @@ def _make_hs_combo() -> QComboBox:
     """Maak een verwarmingssysteem keuzelijst."""
     cb = QComboBox()
     cb.addItems(_HS_LIST)
-    cb.setMinimumWidth(300)
+    cb.setSizeAdjustPolicy(QComboBox.AdjustToContents)
     return cb
 
 
@@ -123,7 +123,7 @@ class FkCalcTab(QWidget):
         sg_layout.addWidget(QLabel("Situatie:"))
         self.scenario_dd = QComboBox()
         self.scenario_dd.addItems(SCENARIOS)
-        self.scenario_dd.setMinimumWidth(350)
+        self.scenario_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         sg_layout.addWidget(self.scenario_dd, 1)
         root.addWidget(scenario_group)
 
@@ -192,7 +192,7 @@ class FkCalcTab(QWidget):
         # Scenario 1: Buitenlucht
         self.bl_bouwdeel = QComboBox()
         self.bl_bouwdeel.addItems(list(_BUITENLUCHT_BD.keys()))
-        self.bl_bouwdeel.setMinimumWidth(250)
+        self.bl_bouwdeel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.bl_hs = _make_hs_combo()
         self.bl_heated = QCheckBox("Verwarmd vlak (wand-/vloerverwarming)")
         for w in (self.bl_bouwdeel, self.bl_hs, self.bl_heated):
@@ -201,7 +201,7 @@ class FkCalcTab(QWidget):
         # Scenario 2: Aangrenzend gebouw
         self.ag_bouwdeel = QComboBox()
         self.ag_bouwdeel.addItems(["Wand", "Vloer", "Plafond"])
-        self.ag_bouwdeel.setMinimumWidth(150)
+        self.ag_bouwdeel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.ag_theta_b = _make_float(20, -50, 50, 0.1)
         self.ag_hs = _make_hs_combo()
         self.ag_heated = QCheckBox("Verwarmd vlak")
@@ -211,9 +211,9 @@ class FkCalcTab(QWidget):
         # Scenario 3: Verwarmde ruimte
         self.vr_bouwdeel = QComboBox()
         self.vr_bouwdeel.addItems(["Wand", "Vloer", "Plafond"])
-        self.vr_bouwdeel.setMinimumWidth(150)
+        self.vr_bouwdeel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.vr_theta_a = QComboBox()
-        self.vr_theta_a.setMinimumWidth(300)
+        self.vr_theta_a.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         for r in _ROOM_TYPES_WOON:
             self.vr_theta_a.addItem(
                 f'{r["omschrijving"]} ({r["theta_i"]} °C)', r["theta_i"]
@@ -232,7 +232,7 @@ class FkCalcTab(QWidget):
         # Scenario 4a: Onverwarmd – bekende temperatuur
         self.ob_bouwdeel = QComboBox()
         self.ob_bouwdeel.addItems(["Wand", "Vloer", "Plafond"])
-        self.ob_bouwdeel.setMinimumWidth(150)
+        self.ob_bouwdeel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.ob_theta_a = _make_float(5, -50, 50, 0.1)
         self.ob_hs = _make_hs_combo()
         self.ob_heated = QCheckBox("Verwarmd vlak")
@@ -242,17 +242,17 @@ class FkCalcTab(QWidget):
         # Scenario 4b: Onverwarmd – onbekende temperatuur
         self.oo_doel = QComboBox()
         self.oo_doel.addItems(["Warmteverlies", "Tijdconstante"])
-        self.oo_doel.setMinimumWidth(200)
+        self.oo_doel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.oo_ruimte = QComboBox()
         self.oo_ruimte.addItems(list(_RUIMTE_MAP.keys()))
-        self.oo_ruimte.setMinimumWidth(200)
+        self.oo_ruimte.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.oo_gevels = QComboBox()
-        self.oo_gevels.setMinimumWidth(400)
+        self.oo_gevels.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         for label, n, door in _GEVEL_OPTIONS:
             self.oo_gevels.addItem(label, (n, door))
         self.oo_daktype = QComboBox()
         self.oo_daktype.addItems(list(_DAKTYPE_MAP.keys()))
-        self.oo_daktype.setMinimumWidth(350)
+        self.oo_daktype.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.oo_buitenwanden = QCheckBox("Buitenwanden aanwezig")
         self.oo_buitenwanden.setChecked(True)
         self.oo_ventilatievoud = _make_float(0.3, 0, 50, 0.1)
@@ -260,7 +260,7 @@ class FkCalcTab(QWidget):
         self.oo_opening_mm2 = _make_float(800, 0, 10000, 0.1, 0)
         self.oo_tijdconst = QComboBox()
         self.oo_tijdconst.addItems(list(_TIJDCONST_MAP.keys()))
-        self.oo_tijdconst.setMinimumWidth(300)
+        self.oo_tijdconst.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         for w in (
             self.oo_doel, self.oo_ruimte, self.oo_gevels, self.oo_daktype,
             self.oo_buitenwanden, self.oo_ventilatievoud, self.oo_a_opening,
@@ -271,15 +271,15 @@ class FkCalcTab(QWidget):
         # Scenario 5: Grond
         self.gr_bouwdeel = QComboBox()
         self.gr_bouwdeel.addItems(["Wand", "Vloer"])
-        self.gr_bouwdeel.setMinimumWidth(150)
+        self.gr_bouwdeel.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.gr_theta_me = _make_float(10.5, -20, 30, 0.1)
         self.gr_hs = _make_hs_combo()
         self.gr_heated = QCheckBox("Verwarmd vlak op grond")
         self.gr_grondwater = QComboBox()
         self.gr_grondwater.addItems(["Nee", "Ja"])
-        self.gr_grondwater.setMinimumWidth(100)
+        self.gr_grondwater.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.gr_gwdiepte = QComboBox()
-        self.gr_gwdiepte.setMinimumWidth(400)
+        self.gr_gwdiepte.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         for label, val in _GW_OPTIONS:
             self.gr_gwdiepte.addItem(label, val)
         self.gr_rc = _make_float(3.5, 0.01, 20, 0.1)

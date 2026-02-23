@@ -12,8 +12,8 @@ from typing import Callable
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QComboBox,
+    QFormLayout,
     QGroupBox,
-    QHBoxLayout,
     QLabel,
     QVBoxLayout,
     QWidget,
@@ -39,31 +39,25 @@ class SettingsTab(QWidget):
 
         root = QVBoxLayout(self)
 
-        # ── Uiterlijk ────────────────────────────────────────────────────────
-        appearance_group = QGroupBox("Uiterlijk")
-        app_layout = QVBoxLayout(appearance_group)
+        # ── Thema ─────────────────────────────────────────────────────────────
+        theme_group = QGroupBox("Thema")
+        form = QFormLayout(theme_group)
 
-        row_theme = QHBoxLayout()
-        row_theme.addWidget(QLabel("Thema:"))
         self.theme_dd = QComboBox()
         self.theme_dd.addItems(["donker", "licht"])
         self.theme_dd.setCurrentText(config.theme)
+        self.theme_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.theme_dd.currentTextChanged.connect(self._on_theme_change)
-        row_theme.addWidget(self.theme_dd)
-        row_theme.addStretch()
-        app_layout.addLayout(row_theme)
+        form.addRow("Kleurenschema:", self.theme_dd)
 
-        row_scale = QHBoxLayout()
-        row_scale.addWidget(QLabel("Applicatiegrootte:"))
         self.scale_dd = QComboBox()
         self.scale_dd.addItems(list(SCALE_FONT_SIZES.keys()))
         self.scale_dd.setCurrentText(config.app_scale)
+        self.scale_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.scale_dd.currentTextChanged.connect(self._on_scale_change)
-        row_scale.addWidget(self.scale_dd)
-        row_scale.addStretch()
-        app_layout.addLayout(row_scale)
+        form.addRow("Applicatiegrootte:", self.scale_dd)
 
-        root.addWidget(appearance_group)
+        root.addWidget(theme_group)
 
         # ── Over ─────────────────────────────────────────────────────────────
         about_group = QGroupBox("Over deze applicatie")
