@@ -16,6 +16,7 @@
         "/^cd \"d:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation\"; python -c \"\nlines = open\\('heat-transmission-calculation\\.ipynb', encoding='utf-8'\\)\\.readlines\\(\\)\n# Print lines 404-411 raw repr\nfor i,L in enumerate\\(lines\\[402:412\\], 403\\):\n    print\\(repr\\(L\\)\\)\n\"$/": {
             "approve": true,
             "matchCommandLine": true
-        }
+        },
+        "D:/Job/Hobby/GitHub/heat-transmission-calculation/.venv/Scripts/python.exe": true
     }
 }
