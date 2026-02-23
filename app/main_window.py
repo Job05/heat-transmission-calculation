@@ -3,7 +3,7 @@
 Bevat de ``MainWindow`` klasse met de tabbladbalk en past het donkere of
 lichte thema toe via Qt-stylesheets.  Kleurenpalet: brandweer
 (oranje / rood / blauw).  Achtergrond donker modus: donkergrijs met
-lichte blauwtint.
+lichte blauwe tint.
 """
 
 from __future__ import annotations

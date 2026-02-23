@@ -23,7 +23,7 @@ _DEFAULTS: dict[str, Any] = {
     "window_height": 750,
 }
 
-# Font-size mapping per schaaloptie
+# Lettergrootte in pixels per schaaloptie (voor de instellingen)
 SCALE_FONT_SIZES: dict[str, int] = {
     "Klein": 13,
     "Normaal": 15,
