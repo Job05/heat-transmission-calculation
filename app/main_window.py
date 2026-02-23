@@ -22,6 +22,8 @@ from .u_value_tab import UValueTab
 from .fk_calc_tab import FkCalcTab
 from .settings_tab import SettingsTab
 
+_TAB_WIDTH_MULTIPLIER = 13.5
+
 # ── Donker thema (brandweer – donkergrijs + blauwtint) ───────────────────────
 
 _DARK_TEMPLATE = """
@@ -38,7 +40,8 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #272c34;
     color: #ffffff;
-    padding: 10px 16px;
+    padding: 10px 30px;
+    min-width: {tw}px;
     border: 1px solid #3a3f4b;
     border-bottom: none;
     border-top-left-radius: 6px;
@@ -202,7 +205,8 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #d6d6d6;
     color: #1a1a1a;
-    padding: 10px 16px;
+    padding: 10px 30px;
+    min-width: {tw}px;
     border: 1px solid #999999;
     border-bottom: none;
     border-top-left-radius: 6px;
@@ -372,7 +376,7 @@ class MainWindow(QMainWindow):
 
         # Tabbladen
         self.tabs = QTabWidget()
-        self.tabs.tabBar().setExpanding(True)
+        self.tabs.setElideMode(Qt.ElideNone)
         self.tabs.tabBar().setUsesScrollButtons(False)
         layout.addWidget(self.tabs)
 
@@ -390,8 +394,9 @@ class MainWindow(QMainWindow):
     def _apply_theme(self, theme_name: str) -> None:
         """Pas het opgegeven thema toe op de gehele applicatie."""
         fs = SCALE_FONT_SIZES.get(self.config.app_scale, 15)
+        tw = int(fs * _TAB_WIDTH_MULTIPLIER)  # tab min-width scaled to font size
         template = _THEME_TEMPLATES.get(theme_name, _THEME_TEMPLATES["donker"])
-        sheet = template.format(fs=fs)
+        sheet = template.format(fs=fs, tw=tw)
         self.setStyleSheet(sheet)
         self.config.theme = theme_name
         self.config.save()
