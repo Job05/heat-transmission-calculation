@@ -9,12 +9,20 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from typing import Any
 
-_DEFAULT_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "user_preferences.json",
-)
+if getattr(sys, "frozen", False):
+    # Running as a PyInstaller bundle – store preferences next to the .exe
+    _DEFAULT_PATH = os.path.join(
+        os.path.dirname(sys.executable),
+        "user_preferences.json",
+    )
+else:
+    _DEFAULT_PATH = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "user_preferences.json",
+    )
 
 _DEFAULTS: dict[str, Any] = {
     "theme": "donker",
