@@ -8,7 +8,7 @@ Build with::
 
 import os
 
-_ROOT = os.path.dirname(os.path.abspath(SPECPATH))
+_ROOT = os.path.abspath(SPECPATH)
 
 a = Analysis(
     [os.path.join(_ROOT, "app", "__main__.py")],
