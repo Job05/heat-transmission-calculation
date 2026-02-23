@@ -1,7 +1,8 @@
-"""main_window.py – Top-level application window with three tabs.
+"""main_window.py – Hoofdvenster met drie tabbladen.
 
-Provides the ``MainWindow`` class that owns the tab bar and applies the
-dark / light theme globally via Qt style sheets.
+Bevat de ``MainWindow`` klasse met de tabbladbalk en past het donkere of
+lichte thema toe via Qt-stylesheets.  Kleurenpalet: brandweer
+(oranje / rood / blauw).
 """
 
 from __future__ import annotations
@@ -14,49 +15,53 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
+from . import __version__
 from .config import Config
 from .u_value_tab import UValueTab
 from .fk_calc_tab import FkCalcTab
 from .settings_tab import SettingsTab
 
-# ── Dark / Light style sheets ────────────────────────────────────────────────
+# ── Donker thema (brandweer) ─────────────────────────────────────────────────
 
 _DARK_STYLE = """
 QWidget {
-    background-color: #1e1e2e;
-    color: #cdd6f4;
+    background-color: #1a1d2e;
+    color: #ffffff;
     font-family: "Segoe UI", "Noto Sans", sans-serif;
-    font-size: 13px;
+    font-size: 14px;
 }
 QTabWidget::pane {
-    border: 1px solid #45475a;
-    background: #1e1e2e;
+    border: 1px solid #3a3d5c;
+    background: #1a1d2e;
 }
 QTabBar::tab {
-    background: #313244;
-    color: #cdd6f4;
-    padding: 8px 20px;
-    border: 1px solid #45475a;
+    background: #252840;
+    color: #ffffff;
+    padding: 10px 22px;
+    border: 1px solid #3a3d5c;
     border-bottom: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     margin-right: 2px;
+    font-size: 14px;
 }
 QTabBar::tab:selected {
-    background: #1e1e2e;
-    color: #89b4fa;
+    background: #1a1d2e;
+    color: #ff6d00;
     font-weight: bold;
+    border-bottom: 2px solid #ff6d00;
 }
 QTabBar::tab:hover:!selected {
-    background: #45475a;
+    background: #2e3150;
 }
 QGroupBox {
-    border: 1px solid #45475a;
+    border: 1px solid #3a3d5c;
     border-radius: 6px;
-    margin-top: 10px;
-    padding-top: 14px;
+    margin-top: 12px;
+    padding-top: 16px;
     font-weight: bold;
-    color: #89b4fa;
+    color: #ff6d00;
+    font-size: 14px;
 }
 QGroupBox::title {
     subcontrol-origin: margin;
@@ -64,137 +69,163 @@ QGroupBox::title {
     padding: 0 6px;
 }
 QLabel {
-    color: #cdd6f4;
+    color: #ffffff;
+    font-size: 14px;
 }
 QComboBox, QDoubleSpinBox, QSpinBox, QLineEdit {
-    background: #313244;
-    color: #cdd6f4;
-    border: 1px solid #45475a;
+    background: #252840;
+    color: #ffffff;
+    border: 1px solid #3a3d5c;
     border-radius: 4px;
-    padding: 4px 8px;
-    min-height: 22px;
+    padding: 6px 10px;
+    min-height: 30px;
+    font-size: 14px;
 }
 QComboBox:focus, QDoubleSpinBox:focus, QSpinBox:focus, QLineEdit:focus {
-    border: 1px solid #89b4fa;
+    border: 1px solid #ff6d00;
 }
 QComboBox::drop-down {
     border: none;
-    width: 22px;
+    width: 26px;
 }
 QComboBox QAbstractItemView {
-    background: #313244;
-    color: #cdd6f4;
-    selection-background-color: #45475a;
+    background: #252840;
+    color: #ffffff;
+    selection-background-color: #3a3d5c;
+    font-size: 14px;
+    min-height: 28px;
+}
+QComboBox QAbstractItemView::item {
+    min-height: 28px;
+    padding: 4px 8px;
 }
 QPushButton {
-    background: #89b4fa;
-    color: #1e1e2e;
+    background: #ff6d00;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
-    padding: 6px 16px;
+    padding: 8px 18px;
     font-weight: bold;
-    min-height: 24px;
+    font-size: 14px;
 }
 QPushButton:hover {
-    background: #74c7ec;
+    background: #ff8f00;
 }
 QPushButton:pressed {
-    background: #585b70;
-    color: #cdd6f4;
+    background: #e65100;
 }
 QPushButton[danger="true"] {
-    background: #f38ba8;
-    color: #1e1e2e;
+    background: #d32f2f;
+    color: #ffffff;
 }
 QPushButton[danger="true"]:hover {
-    background: #eba0ac;
+    background: #e53935;
+}
+QPushButton[secondary="true"] {
+    background: #1565c0;
+    color: #ffffff;
+}
+QPushButton[secondary="true"]:hover {
+    background: #1976d2;
 }
 QCheckBox {
-    spacing: 6px;
-    color: #cdd6f4;
+    spacing: 8px;
+    color: #ffffff;
+    font-size: 14px;
 }
 QCheckBox::indicator {
-    width: 16px; height: 16px;
-    border: 1px solid #45475a;
+    width: 18px; height: 18px;
+    border: 2px solid #3a3d5c;
     border-radius: 3px;
-    background: #313244;
+    background: #252840;
 }
 QCheckBox::indicator:checked {
-    background: #89b4fa;
-    border-color: #89b4fa;
+    background: #ff6d00;
+    border-color: #ff6d00;
 }
 QScrollArea {
     border: none;
 }
 QTableWidget {
-    background: #1e1e2e;
-    color: #cdd6f4;
-    gridline-color: #45475a;
-    border: 1px solid #45475a;
+    background: #1a1d2e;
+    color: #ffffff;
+    gridline-color: #3a3d5c;
+    border: 1px solid #3a3d5c;
     border-radius: 4px;
+    font-size: 14px;
 }
 QTableWidget::item {
-    padding: 4px 8px;
+    padding: 6px 10px;
 }
 QHeaderView::section {
-    background: #313244;
-    color: #89b4fa;
-    padding: 6px 8px;
-    border: 1px solid #45475a;
+    background: #252840;
+    color: #ff6d00;
+    padding: 8px 10px;
+    border: 1px solid #3a3d5c;
     font-weight: bold;
+    font-size: 14px;
 }
 QRadioButton {
-    color: #cdd6f4;
-    spacing: 6px;
+    color: #ffffff;
+    spacing: 8px;
+    font-size: 14px;
 }
 QRadioButton::indicator {
-    width: 14px; height: 14px;
-    border: 1px solid #45475a;
-    border-radius: 7px;
-    background: #313244;
+    width: 16px; height: 16px;
+    border: 2px solid #3a3d5c;
+    border-radius: 8px;
+    background: #252840;
 }
 QRadioButton::indicator:checked {
-    background: #89b4fa;
-    border-color: #89b4fa;
+    background: #ff6d00;
+    border-color: #ff6d00;
+}
+QFrame[frameShape="6"] {
+    border: 1px solid #3a3d5c;
+    border-radius: 6px;
+    background: #20233a;
 }
 """
 
 _LIGHT_STYLE = """
 QWidget {
-    background-color: #eff1f5;
-    color: #4c4f69;
+    background-color: #f0f0f0;
+    color: #1a1a1a;
     font-family: "Segoe UI", "Noto Sans", sans-serif;
-    font-size: 13px;
+    font-size: 14px;
 }
 QTabWidget::pane {
-    border: 1px solid #bcc0cc;
-    background: #eff1f5;
+    border: 1px solid #999999;
+    background: #f0f0f0;
 }
 QTabBar::tab {
-    background: #ccd0da;
-    color: #4c4f69;
-    padding: 8px 20px;
-    border: 1px solid #bcc0cc;
+    background: #d6d6d6;
+    color: #1a1a1a;
+    padding: 10px 22px;
+    border: 1px solid #999999;
     border-bottom: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     margin-right: 2px;
+    font-size: 14px;
 }
 QTabBar::tab:selected {
-    background: #eff1f5;
-    color: #1e66f5;
+    background: #f0f0f0;
+    color: #e65100;
     font-weight: bold;
+    border-bottom: 2px solid #e65100;
 }
 QTabBar::tab:hover:!selected {
-    background: #bcc0cc;
+    background: #c0c0c0;
 }
 QGroupBox {
-    border: 1px solid #bcc0cc;
+    border: 1px solid #999999;
     border-radius: 6px;
-    margin-top: 10px;
-    padding-top: 14px;
+    margin-top: 12px;
+    padding-top: 16px;
     font-weight: bold;
-    color: #1e66f5;
+    color: #e65100;
+    font-size: 14px;
 }
 QGroupBox::title {
     subcontrol-origin: margin;
@@ -202,124 +233,146 @@ QGroupBox::title {
     padding: 0 6px;
 }
 QLabel {
-    color: #4c4f69;
+    color: #1a1a1a;
+    font-size: 14px;
 }
 QComboBox, QDoubleSpinBox, QSpinBox, QLineEdit {
     background: #ffffff;
-    color: #4c4f69;
-    border: 1px solid #bcc0cc;
+    color: #1a1a1a;
+    border: 1px solid #999999;
     border-radius: 4px;
-    padding: 4px 8px;
-    min-height: 22px;
+    padding: 6px 10px;
+    min-height: 30px;
+    font-size: 14px;
 }
 QComboBox:focus, QDoubleSpinBox:focus, QSpinBox:focus, QLineEdit:focus {
-    border: 1px solid #1e66f5;
+    border: 1px solid #e65100;
 }
 QComboBox::drop-down {
     border: none;
-    width: 22px;
+    width: 26px;
 }
 QComboBox QAbstractItemView {
     background: #ffffff;
-    color: #4c4f69;
-    selection-background-color: #ccd0da;
+    color: #1a1a1a;
+    selection-background-color: #ffe0b2;
+    font-size: 14px;
+    min-height: 28px;
+}
+QComboBox QAbstractItemView::item {
+    min-height: 28px;
+    padding: 4px 8px;
 }
 QPushButton {
-    background: #1e66f5;
+    background: #e65100;
     color: #ffffff;
     border: none;
     border-radius: 4px;
-    padding: 6px 16px;
+    padding: 8px 18px;
     font-weight: bold;
-    min-height: 24px;
+    font-size: 14px;
 }
 QPushButton:hover {
-    background: #2a7bff;
+    background: #ff6d00;
 }
 QPushButton:pressed {
-    background: #6c6f85;
-    color: #ffffff;
+    background: #bf360c;
 }
 QPushButton[danger="true"] {
-    background: #d20f39;
+    background: #c62828;
     color: #ffffff;
 }
 QPushButton[danger="true"]:hover {
-    background: #e64553;
+    background: #d32f2f;
+}
+QPushButton[secondary="true"] {
+    background: #0d47a1;
+    color: #ffffff;
+}
+QPushButton[secondary="true"]:hover {
+    background: #1565c0;
 }
 QCheckBox {
-    spacing: 6px;
-    color: #4c4f69;
+    spacing: 8px;
+    color: #1a1a1a;
+    font-size: 14px;
 }
 QCheckBox::indicator {
-    width: 16px; height: 16px;
-    border: 1px solid #bcc0cc;
+    width: 18px; height: 18px;
+    border: 2px solid #999999;
     border-radius: 3px;
     background: #ffffff;
 }
 QCheckBox::indicator:checked {
-    background: #1e66f5;
-    border-color: #1e66f5;
+    background: #e65100;
+    border-color: #e65100;
 }
 QScrollArea {
     border: none;
 }
 QTableWidget {
     background: #ffffff;
-    color: #4c4f69;
-    gridline-color: #bcc0cc;
-    border: 1px solid #bcc0cc;
+    color: #1a1a1a;
+    gridline-color: #999999;
+    border: 1px solid #999999;
     border-radius: 4px;
+    font-size: 14px;
 }
 QTableWidget::item {
-    padding: 4px 8px;
+    padding: 6px 10px;
 }
 QHeaderView::section {
-    background: #ccd0da;
-    color: #1e66f5;
-    padding: 6px 8px;
-    border: 1px solid #bcc0cc;
+    background: #d6d6d6;
+    color: #e65100;
+    padding: 8px 10px;
+    border: 1px solid #999999;
     font-weight: bold;
+    font-size: 14px;
 }
 QRadioButton {
-    color: #4c4f69;
-    spacing: 6px;
+    color: #1a1a1a;
+    spacing: 8px;
+    font-size: 14px;
 }
 QRadioButton::indicator {
-    width: 14px; height: 14px;
-    border: 1px solid #bcc0cc;
-    border-radius: 7px;
+    width: 16px; height: 16px;
+    border: 2px solid #999999;
+    border-radius: 8px;
     background: #ffffff;
 }
 QRadioButton::indicator:checked {
-    background: #1e66f5;
-    border-color: #1e66f5;
+    background: #e65100;
+    border-color: #e65100;
+}
+QFrame[frameShape="6"] {
+    border: 1px solid #999999;
+    border-radius: 6px;
+    background: #e8e8e8;
 }
 """
 
-THEMES = {"dark": _DARK_STYLE, "light": _LIGHT_STYLE}
+THEMES = {"donker": _DARK_STYLE, "licht": _LIGHT_STYLE}
 
 
 class MainWindow(QMainWindow):
-    """Application main window containing the three-tab interface."""
+    """Hoofdvenster met drie tabbladen."""
 
     def __init__(self, config: Config) -> None:
         super().__init__()
         self.config = config
-        self.setWindowTitle("Heat Transmission Calculator")
+        self.setWindowTitle(f"Warmtetransmissie Rekentool  v{__version__}")
         self.resize(config.window_width, config.window_height)
 
-        # Central widget
+        # Centraal widget
         central = QWidget()
         self.setCentralWidget(central)
         layout = QVBoxLayout(central)
         layout.setContentsMargins(4, 4, 4, 4)
 
-        # Tab widget
+        # Tabbladen
         self.tabs = QTabWidget()
         layout.addWidget(self.tabs)
 
-        # Create tabs
         self.u_value_tab = UValueTab(config)
         self.fk_calc_tab = FkCalcTab(config)
         self.settings_tab = SettingsTab(config, self._apply_theme)
@@ -328,22 +381,18 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.fk_calc_tab, "Correctiefactoren")
         self.tabs.addTab(self.settings_tab, "Instellingen")
 
-        # Apply stored theme
+        # Sla het thema op en pas toe
         self._apply_theme(config.theme)
 
-    # ── theming ──────────────────────────────────────────────────────────────
-
     def _apply_theme(self, theme_name: str) -> None:
-        """Apply a named theme to the entire application."""
-        sheet = THEMES.get(theme_name, THEMES["dark"])
+        """Pas het opgegeven thema toe op de gehele applicatie."""
+        sheet = THEMES.get(theme_name, THEMES["donker"])
         self.setStyleSheet(sheet)
         self.config.theme = theme_name
         self.config.save()
 
-    # ── window lifecycle ─────────────────────────────────────────────────────
-
     def closeEvent(self, event: "QCloseEvent") -> None:  # noqa: N802
-        """Persist window dimensions on close."""
+        """Sla vensterafmetingen op bij sluiten."""
         self.config.set("window_width", self.width())
         self.config.set("window_height", self.height())
         self.config.save()

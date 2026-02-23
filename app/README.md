@@ -1,119 +1,116 @@
-# Heat Transmission Calculator – Desktop Application
+# Warmtetransmissie Rekentool – Desktop Applicatie
 
-A PyQt5-based desktop application that provides two interactive calculation
-tools originally developed as Jupyter Notebook widgets.
+Een PyQt5-gebaseerde desktop applicatie met twee interactieve rekentools
+voor warmtetransmissieberekeningen.
 
-![Dark mode – U-value calculator](https://github.com/user-attachments/assets/44b27a66-59c0-46a8-b362-90f5cba0ec4c)
-
-## Quick start
+## Snel starten
 
 ```bash
-# Install dependencies
+# Installeer afhankelijkheden
 pip install -r requirements.txt
 
-# Run the application (from the repository root)
+# Start de applicatie (vanuit de repository-root)
 python -m app
 ```
 
-## Project structure
+## Projectstructuur
 
 ```
 app/
-├── __init__.py        # Package docstring
-├── __main__.py        # Entry point (python -m app)
-├── main_window.py     # QMainWindow with three tabs and theme engine
-├── u_value_tab.py     # Tool 1 – U-value / heat-transmission calculator
-├── fk_calc_tab.py     # Tool 2 – Correction-factor calculator (f_k, f_ia,k, f_ig,k)
-├── settings_tab.py    # Settings tab (theme switching, about info)
-├── config.py          # JSON-backed user preferences
-└── README.md          # This file
+├── __init__.py        # Pakket met versienummer
+├── __main__.py        # Startpunt (python -m app)
+├── main_window.py     # Hoofdvenster met drie tabbladen en thema-engine
+├── u_value_tab.py     # Tool 1 – U-waarde calculator
+├── fk_calc_tab.py     # Tool 2 – Correctiefactoren (f_k, f_ia,k, f_ig,k)
+├── settings_tab.py    # Instellingen (thema wisselen, over-informatie)
+├── config.py          # JSON-gebaseerde gebruikersvoorkeuren
+└── README.md          # Dit bestand
 ```
 
-### Supporting files (repository root)
+### Ondersteunende bestanden (repository-root)
 
-| File / folder               | Purpose |
-|-----------------------------|---------|
-| `heat_calc.py`              | Pure-Python helpers & constants for U-value calculations |
-| `fk_calc.py`                | Pure-Python correction-factor formulas |
-| `material_properties.json`  | Material thermal-conductivity database |
-| `tables/`                   | Reference data tables (JSON) used by `fk_calc.py` |
-| `requirements.txt`          | Python dependencies for the desktop app |
-| `user_preferences.json`     | Auto-generated at runtime – stores appearance settings |
+| Bestand / map                | Doel |
+|------------------------------|------|
+| `heat_calc.py`               | Hulpfuncties en constanten voor U-waarde berekeningen |
+| `fk_calc.py`                 | Correctiefactor-formules |
+| `material_properties.json`   | Materiaal-database (warmtegeleidingscoëfficiënten) |
+| `tables/`                    | Referentietabellen (JSON) gebruikt door `fk_calc.py` |
+| `requirements.txt`           | Python-afhankelijkheden |
+| `user_preferences.json`      | Automatisch gegenereerd – bevat uiterlijk-instellingen |
 
-## Tabs
+## Tabbladen
 
-### 1. U-waarde Calculator (Tool 1)
+### 1. U-waarde Calculator
 
-Calculates the thermal transmittance (U-value) of a multi-layer building
-construction.
+Berekent de warmtedoorgangscoëfficiënt (U-waarde) van een meerlaagse
+bouwconstructie.
 
-* Add / remove construction layers dynamically.
-* Each layer can use a material from the JSON database **or** a manually
-  entered R-value (e.g. for air gaps).
-* Categories include concrete, wood, insulation, glass, doors, floors, etc.
-* The result table and U-value update live as inputs change.
+* Voeg constructielagen dynamisch toe of verwijder ze.
+* Elke laag kan een materiaal uit de JSON-database gebruiken **of** een
+  handmatig ingevoerde R-waarde (bijv. voor luchtspouwen).
+* Categorieën omvatten beton, hout, isolatie, glas, deuren, vloeren, enz.
+* De resultaattabel en U-waarde worden live bijgewerkt.
+* Configuratie kan worden opgeslagen en geladen als JSON-bestand.
 
-### 2. Correctiefactoren (Tool 2)
+### 2. Correctiefactoren
 
-Computes heat-loss correction factors based on the adjacent boundary
-condition.  Six scenarios are supported:
+Berekent warmteverlies-correctiefactoren op basis van de aangrenzende
+situatie.  Zes scenario's worden ondersteund:
 
-| # | Scenario | Output factor |
+| # | Scenario | Uitvoerfactor |
 |---|----------|---------------|
-| 1 | Buitenlucht (exterior air) | f_k |
-| 2 | Aangrenzend gebouw (adjacent building) | f_ia,k |
-| 3 | Verwarmde ruimte (heated room, same dwelling) | f_ia,k |
+| 1 | Buitenlucht | f_k |
+| 2 | Aangrenzend gebouw | f_ia,k |
+| 3 | Verwarmde ruimte (zelfde woning) | f_ia,k |
 | 4a | Onverwarmde ruimte – bekende temperatuur | f_k |
 | 4b | Onverwarmde ruimte – onbekende temperatuur | f_k (Tabel 2.3 / 2.13) |
-| 5 | Grond (ground contact) | f_ig,k · f_gw |
+| 5 | Grond | f_ig,k · f_gw |
 
-Dynamic input fields appear based on the selected scenario.
+Dynamische invoervelden verschijnen op basis van het geselecteerde scenario.
+Configuratie kan worden opgeslagen en geladen als JSON-bestand.
 
-### 3. Instellingen (Settings)
+### 3. Instellingen
 
-* **Theme switching** – toggle between dark and light mode (Catppuccin
-  colour palette).
-* Preferences are saved automatically to `user_preferences.json`.
+* **Thema wisselen** – schakelen tussen donker en licht modus
+  (brandweer-kleurenpalet: oranje / rood / blauw).
+* Voorkeuren worden automatisch opgeslagen in `user_preferences.json`.
 
-## How to add a new tool / tab
+## Een nieuw tabblad toevoegen
 
-1. Create a new module in `app/`, e.g. `app/my_tool_tab.py`.
-2. Define a `QWidget` subclass with the tool's UI and logic.
-3. Import it in `app/main_window.py` and add a tab:
+1. Maak een nieuw bestand in `app/`, bijv. `app/mijn_tool_tab.py`.
+2. Definieer een `QWidget`-subklasse met de UI en logica van de tool.
+3. Importeer het in `app/main_window.py` en voeg een tabblad toe:
 
    ```python
-   from .my_tool_tab import MyToolTab
+   from .mijn_tool_tab import MijnToolTab
 
-   # inside MainWindow.__init__:
-   self.my_tool_tab = MyToolTab(config)
-   self.tabs.addTab(self.my_tool_tab, "My Tool")
+   # in MainWindow.__init__:
+   self.mijn_tool_tab = MijnToolTab(config)
+   self.tabs.addTab(self.mijn_tool_tab, "Mijn Tool")
    ```
 
-4. If the tool needs persistent data, load/save JSON files from the
-   repository root (like `material_properties.json`).
+4. Als de tool persistente gegevens nodig heeft, laad/sla JSON-bestanden
+   op vanuit de repository-root (zoals `material_properties.json`).
 
-## How to add a new setting
+## Een nieuwe instelling toevoegen
 
-1. Add a default value in `config.py` → `_DEFAULTS` dictionary.
-2. Optionally add a typed property on the `Config` class.
-3. Add a UI control in `app/settings_tab.py` and wire it to
-   `config.set(key, value)` + `config.save()`.
+1. Voeg een standaardwaarde toe in `config.py` → `_DEFAULTS` dictionary.
+2. Voeg optioneel een getypte eigenschap toe aan de `Config` klasse.
+3. Voeg een UI-besturingselement toe in `app/settings_tab.py` en koppel het
+   aan `config.set(key, value)` + `config.save()`.
 
-## Data storage
+## Gegevensopslag
 
-* **Reference tables** – read-only JSON files in `tables/` (loaded by
-  `fk_calc.py` at import time).
-* **Material database** – `material_properties.json` (loaded by
-  `u_value_tab.py` at import time).
-* **User preferences** – `user_preferences.json` (read/written by
-  `app/config.py`; git-ignored).
+* **Referentietabellen** – alleen-lezen JSON-bestanden in `tables/`.
+* **Materiaal-database** – `material_properties.json`.
+* **Gebruikersvoorkeuren** – `user_preferences.json` (git-ignored).
 
-## Dependencies
+## Afhankelijkheden
 
 * Python ≥ 3.10
 * PyQt5 ≥ 5.15
 
-Install with:
+Installeer met:
 
 ```bash
 pip install -r requirements.txt

@@ -1,24 +1,19 @@
-# heat-transmission-calculation
+# Warmtetransmissie Rekentool
 
-Tools for calculating heat-transmission coefficients and correction factors
-for building constructions, based on Dutch building-code standards.
+Rekentools voor warmtetransmissiecoëfficiënten en correctiefactoren
+voor bouwconstructies, gebaseerd op Nederlandse bouwregelgeving.
 
-## Desktop application
+## Desktop applicatie
 
-A PyQt5 GUI with dark/light theme support, providing:
+Een PyQt5-applicatie met donker/licht thema, bestaande uit:
 
-* **U-waarde Calculator** – multi-layer thermal transmittance (U-value)
-* **Correctiefactoren** – correction factors f_k, f_ia,k, f_ig,k
-* **Instellingen** – theme switching and preferences
+* **U-waarde Calculator** – warmtedoorgangscoëfficiënt (meerlaagse constructie)
+* **Correctiefactoren** – f_k, f_ia,k, f_ig,k
+* **Instellingen** – thema wisselen en voorkeuren
 
 ```bash
 pip install -r requirements.txt
 python -m app
 ```
 
-See [`app/README.md`](app/README.md) for full documentation.
-
-## Jupyter Notebook
-
-The original interactive tools are also available in
-`heat-transmission-calculation.ipynb`.
+Zie [`app/README.md`](app/README.md) voor volledige documentatie.

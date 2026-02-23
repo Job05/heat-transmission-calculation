@@ -1,8 +1,8 @@
-"""config.py – User preferences and configuration management.
+"""config.py – Gebruikersvoorkeuren en configuratie.
 
-All settings are persisted as a JSON file in the repository root so they
-survive between sessions.  The ``Config`` class provides typed access to
-every stored key with sensible defaults.
+Alle instellingen worden opgeslagen als JSON-bestand zodat ze
+bewaard blijven tussen sessies.  De ``Config`` klasse biedt getypte
+toegang tot elke opgeslagen sleutel met standaardwaarden.
 """
 
 from __future__ import annotations
@@ -11,15 +11,13 @@ import json
 import os
 from typing import Any
 
-# Default path for the user-preferences file (next to the ``app/`` folder).
 _DEFAULT_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "user_preferences.json",
 )
 
 _DEFAULTS: dict[str, Any] = {
-    "theme": "dark",        # "dark" or "light"
-    "language": "nl",       # reserved for future i18n
+    "theme": "donker",
     "window_width": 1100,
     "window_height": 750,
 }
@@ -63,7 +61,7 @@ class Config:
 
     @property
     def theme(self) -> str:
-        return self._data.get("theme", "dark")
+        return self._data.get("theme", "donker")
 
     @theme.setter
     def theme(self, value: str) -> None:

@@ -1,10 +1,6 @@
-"""__main__.py – Application entry point.
+"""__main__.py – Startpunt van de applicatie.
 
-Launch the desktop application with::
-
-    python -m app
-
-Or from the repository root::
+Start de desktop applicatie met::
 
     python -m app
 """

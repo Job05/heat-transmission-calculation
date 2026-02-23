@@ -1,13 +1,15 @@
-"""Heat Transmission Calculation – Desktop Application.
+"""Warmtetransmissie Rekentool – Desktop Applicatie.
 
-A PyQt5-based GUI that provides two calculation tools:
+Twee rekentools voor warmtetransmissieberekeningen:
 
-* **Tool 1 – U-value calculator**: compute the thermal transmittance of a
-  multi-layer building construction.
-* **Tool 2 – Correction-factor calculator**: determine f_k, f_ia,k, or
-  f_ig,k for various boundary conditions.
+* **Tool 1 – U-waarde calculator**: berekening van de
+  warmtedoorgangscoëfficiënt van een meerlaagse constructie.
+* **Tool 2 – Correctiefactoren**: bepaling van f_k, f_ia,k of f_ig,k
+  voor diverse aangrenzende situaties.
 
-Run the application with::
+Start de applicatie met::
 
     python -m app
 """
+
+__version__ = "1.0.0"
