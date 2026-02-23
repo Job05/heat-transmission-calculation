@@ -98,6 +98,7 @@ def _make_hs_combo() -> QComboBox:
 
 
 def _make_float(value: float, lo: float, hi: float, step: float, decimals: int = 1) -> QDoubleSpinBox:
+    """Create a pre-configured ``QDoubleSpinBox`` with the given range and defaults."""
     sb = QDoubleSpinBox()
     sb.setRange(lo, hi)
     sb.setDecimals(decimals)

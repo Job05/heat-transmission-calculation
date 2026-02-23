@@ -342,7 +342,7 @@ class MainWindow(QMainWindow):
 
     # ── window lifecycle ─────────────────────────────────────────────────────
 
-    def closeEvent(self, event) -> None:  # noqa: N802
+    def closeEvent(self, event: "QCloseEvent") -> None:  # noqa: N802
         """Persist window dimensions on close."""
         self.config.set("window_width", self.width())
         self.config.set("window_height", self.height())

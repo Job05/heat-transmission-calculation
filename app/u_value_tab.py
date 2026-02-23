@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import os
 import sys
-from typing import Optional
+from typing import Callable, Optional
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -63,8 +63,8 @@ class LayerRow(QFrame):
     def __init__(
         self,
         materials: dict,
-        on_change: callable,
-        on_remove: callable,
+        on_change: Callable[[], None],
+        on_remove: Callable[["LayerRow"], None],
     ) -> None:
         super().__init__()
         self.materials = materials
