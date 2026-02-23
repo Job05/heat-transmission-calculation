@@ -144,7 +144,7 @@ class FkCalcTab(QWidget):
         # Dynamische invoervelden
         self.fields_group = QGroupBox("Invoervelden")
         self.fields_layout = QVBoxLayout(self.fields_group)
-        root.addWidget(self.fields_group, 3)
+        root.addWidget(self.fields_group, 1)
 
         # Resultaat
         res_group = QGroupBox("Resultaat")

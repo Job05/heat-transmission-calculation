@@ -38,8 +38,7 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #272c34;
     color: #ffffff;
-    padding: 10px 20px;
-    min-width: 250px;
+    padding: 10px 16px;
     border: 1px solid #3a3f4b;
     border-bottom: none;
     border-top-left-radius: 6px;
@@ -203,8 +202,7 @@ QTabWidget::pane {{
 QTabBar::tab {{
     background: #d6d6d6;
     color: #1a1a1a;
-    padding: 10px 20px;
-    min-width: 250px;
+    padding: 10px 16px;
     border: 1px solid #999999;
     border-bottom: none;
     border-top-left-radius: 6px;
@@ -374,6 +372,8 @@ class MainWindow(QMainWindow):
 
         # Tabbladen
         self.tabs = QTabWidget()
+        self.tabs.tabBar().setExpanding(True)
+        self.tabs.tabBar().setUsesScrollButtons(False)
         layout.addWidget(self.tabs)
 
         self.u_value_tab = UValueTab(config)

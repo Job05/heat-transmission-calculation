@@ -48,6 +48,7 @@ class SettingsTab(QWidget):
         self.theme_dd.addItems(["donker", "licht"])
         self.theme_dd.setCurrentText(config.theme)
         self.theme_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+        self.theme_dd.setMaximumWidth(200)
         self.theme_dd.currentTextChanged.connect(self._on_theme_change)
         form.addRow("Kleurenschema:", self.theme_dd)
 
@@ -55,6 +56,7 @@ class SettingsTab(QWidget):
         self.scale_dd.addItems(list(SCALE_FONT_SIZES.keys()))
         self.scale_dd.setCurrentText(config.app_scale)
         self.scale_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+        self.scale_dd.setMaximumWidth(200)
         self.scale_dd.currentTextChanged.connect(self._on_scale_change)
         form.addRow("Applicatiegrootte:", self.scale_dd)
 
