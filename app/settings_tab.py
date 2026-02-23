@@ -42,6 +42,7 @@ class SettingsTab(QWidget):
         # ── Thema ─────────────────────────────────────────────────────────────
         theme_group = QGroupBox("Thema")
         form = QFormLayout(theme_group)
+        form.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
 
         self.theme_dd = QComboBox()
         self.theme_dd.addItems(["donker", "licht"])

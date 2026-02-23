@@ -144,7 +144,7 @@ class FkCalcTab(QWidget):
         # Dynamische invoervelden
         self.fields_group = QGroupBox("Invoervelden")
         self.fields_layout = QVBoxLayout(self.fields_group)
-        root.addWidget(self.fields_group)
+        root.addWidget(self.fields_group, 3)
 
         # Resultaat
         res_group = QGroupBox("Resultaat")
@@ -162,7 +162,7 @@ class FkCalcTab(QWidget):
         self.error_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
         self.error_label.setWordWrap(True)
         res_layout.addWidget(self.error_label)
-        root.addWidget(res_group)
+        root.addWidget(res_group, 1)
 
         # Opslaan / Laden knoppen
         io_row = QHBoxLayout()
