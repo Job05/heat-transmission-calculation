@@ -1,0 +1,42 @@
+name: Build Windows Executable
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build executable
+        run: python build_exe.py
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Warmtetransmissie-Rekentool-Windows
+          path: dist/Warmtetransmissie Rekentool/
+
+      - name: Zip release folder
+        if: github.event_name == 'release'
+        run: Compress-Archive -Path "dist/Warmtetransmissie Rekentool/*" -DestinationPath "Warmtetransmissie-Rekentool-Windows.zip"
+
+      - name: Attach zip to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Warmtetransmissie-Rekentool-Windows.zip

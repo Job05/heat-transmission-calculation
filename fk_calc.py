@@ -13,11 +13,13 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from typing import Optional
 
 # ── Table loading ─────────────────────────────────────────────────────────────
 
-_TABLES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tables")
+_BASE_DIR = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+_TABLES_DIR = os.path.join(_BASE_DIR, "tables")
 
 
 def _load_json(filename: str) -> dict:

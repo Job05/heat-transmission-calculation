@@ -115,3 +115,10 @@ Installeer met:
 ```bash
 pip install -r requirements.txt
 ```
+
+## Standalone .exe
+
+De applicatie kan als standalone Windows-executable worden gedistribueerd.
+Zie [`../README.md`](../README.md) voor bouwinstructies.  In de gebouwde
+versie worden `material_properties.json` en `tables/` automatisch
+meegeleverd en worden gebruikersvoorkeuren opgeslagen naast de `.exe`.

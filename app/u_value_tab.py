@@ -31,9 +31,9 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _REPO_ROOT not in sys.path:
-    sys.path.insert(0, _REPO_ROOT)
+_BASE_DIR = getattr(sys, "_MEIPASS", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _BASE_DIR not in sys.path:
+    sys.path.insert(0, _BASE_DIR)
 
 from heat_calc import (  # noqa: E402
     U_VALUE_CATS,
@@ -45,7 +45,7 @@ from heat_calc import (  # noqa: E402
     raw_value,
 )
 
-_MATERIALS_PATH = os.path.join(_REPO_ROOT, "material_properties.json")
+_MATERIALS_PATH = os.path.join(_BASE_DIR, "material_properties.json")
 with open(_MATERIALS_PATH, "r", encoding="utf-8") as _fh:
     _MATERIALS: dict = json.load(_fh)
 
