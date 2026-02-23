@@ -669,19 +669,23 @@ class FkCalcTab(QWidget):
         self._on_scenario_change()
 
     def _save_to_file(self) -> None:
-        """Sla de huidige invoer op naar een JSON-bestand."""
+        """Sla de huidige invoer op naar een bestand."""
         path, _ = QFileDialog.getSaveFileName(
-            self, "Configuratie opslaan", "", "JSON-bestanden (*.json)"
+            self, "Configuratie opslaan", "",
+            "Correctiefactoren configuratie (*.cfr)"
         )
         if not path:
             return
+        if not path.endswith(".cfr"):
+            path += ".cfr"
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(self._get_state(), fh, indent=2, ensure_ascii=False)
 
     def _load_from_file(self) -> None:
-        """Laad invoer uit een JSON-bestand."""
+        """Laad invoer uit een bestand."""
         path, _ = QFileDialog.getOpenFileName(
-            self, "Configuratie laden", "", "JSON-bestanden (*.json)"
+            self, "Configuratie laden", "",
+            "Correctiefactoren configuratie (*.cfr)"
         )
         if not path:
             return

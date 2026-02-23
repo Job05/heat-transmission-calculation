@@ -196,10 +196,10 @@ class LayerRow(QFrame):
         r = self.get_r()
         if r is not None:
             self.r_lbl.setText(f"  → R = {r:.3f} m²·K/W")
-            self.r_lbl.setStyleSheet("color: #4caf50; font-weight: bold; font-size: 14px;")
+            self.r_lbl.setStyleSheet("color: #4caf50; font-weight: bold;")
         else:
             self.r_lbl.setText("  → R kan niet worden bepaald")
-            self.r_lbl.setStyleSheet("color: #d32f2f; font-weight: bold; font-size: 14px;")
+            self.r_lbl.setStyleSheet("color: #d32f2f; font-weight: bold;")
 
         cat = self.cat_dd.currentText()
         if (
@@ -388,7 +388,7 @@ class UValueTab(QWidget):
 
         self.u_label = QLabel("")
         self.u_label.setAlignment(Qt.AlignCenter)
-        self.u_label.setStyleSheet("font-size: 16px; font-weight: bold; padding: 8px;")
+        self.u_label.setStyleSheet("font-weight: bold; padding: 8px;")
         self.u_label.setWordWrap(True)
         res_layout.addWidget(self.u_label)
         root.addWidget(res_group)
@@ -470,12 +470,15 @@ class UValueTab(QWidget):
     # ── Opslaan / Laden ──────────────────────────────────────────────────────
 
     def _save_to_file(self) -> None:
-        """Sla de huidige configuratie op naar een JSON-bestand."""
+        """Sla de huidige configuratie op naar een bestand."""
         path, _ = QFileDialog.getSaveFileName(
-            self, "Configuratie opslaan", "", "JSON-bestanden (*.json)"
+            self, "Configuratie opslaan", "",
+            "U-waarde configuratie (*.uwr)"
         )
         if not path:
             return
+        if not path.endswith(".uwr"):
+            path += ".uwr"
         data = {
             "ri": self.ri_dd.currentText(),
             "re": self.re_dd.currentText(),
@@ -485,9 +488,10 @@ class UValueTab(QWidget):
             json.dump(data, fh, indent=2, ensure_ascii=False)
 
     def _load_from_file(self) -> None:
-        """Laad een configuratie uit een JSON-bestand."""
+        """Laad een configuratie uit een bestand."""
         path, _ = QFileDialog.getOpenFileName(
-            self, "Configuratie laden", "", "JSON-bestanden (*.json)"
+            self, "Configuratie laden", "",
+            "U-waarde configuratie (*.uwr)"
         )
         if not path:
             return

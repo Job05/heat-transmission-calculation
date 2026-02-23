@@ -18,8 +18,17 @@ _DEFAULT_PATH = os.path.join(
 
 _DEFAULTS: dict[str, Any] = {
     "theme": "donker",
+    "app_scale": "Normaal",
     "window_width": 1100,
     "window_height": 750,
+}
+
+# Font-size mapping per schaaloptie
+SCALE_FONT_SIZES: dict[str, int] = {
+    "Klein": 13,
+    "Normaal": 15,
+    "Groot": 17,
+    "Extra groot": 20,
 }
 
 
@@ -74,3 +83,11 @@ class Config:
     @property
     def window_height(self) -> int:
         return int(self._data.get("window_height", 750))
+
+    @property
+    def app_scale(self) -> str:
+        return self._data.get("app_scale", "Normaal")
+
+    @app_scale.setter
+    def app_scale(self, value: str) -> None:
+        self._data["app_scale"] = value
