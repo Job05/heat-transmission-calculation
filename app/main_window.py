@@ -39,7 +39,7 @@ QTabBar::tab {{
     background: #272c34;
     color: #ffffff;
     padding: 10px 20px;
-    min-width: 180px;
+    min-width: 250px;
     border: 1px solid #3a3f4b;
     border-bottom: none;
     border-top-left-radius: 6px;
@@ -204,7 +204,7 @@ QTabBar::tab {{
     background: #d6d6d6;
     color: #1a1a1a;
     padding: 10px 20px;
-    min-width: 180px;
+    min-width: 250px;
     border: 1px solid #999999;
     border-bottom: none;
     border-top-left-radius: 6px;
