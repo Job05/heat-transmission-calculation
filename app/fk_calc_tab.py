@@ -124,7 +124,8 @@ class FkCalcTab(QWidget):
         self.scenario_dd = QComboBox()
         self.scenario_dd.addItems(SCENARIOS)
         self.scenario_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
-        sg_layout.addWidget(self.scenario_dd, 1)
+        sg_layout.addWidget(self.scenario_dd)
+        sg_layout.addStretch()
         root.addWidget(scenario_group)
 
         # Temperaturen
@@ -402,7 +403,8 @@ class FkCalcTab(QWidget):
         lbl.setMinimumWidth(240)
         row.addWidget(lbl)
         widget.setVisible(True)
-        row.addWidget(widget, 1)
+        row.addWidget(widget)
+        row.addStretch()
         wrapper = QWidget()
         wrapper.setLayout(row)
         self.fields_layout.addWidget(wrapper)

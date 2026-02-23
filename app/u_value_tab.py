@@ -91,18 +91,19 @@ class LayerRow(QFrame):
         self.cat_dd.addItems(list(materials.keys()))
         self.cat_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         sel_row.addWidget(QLabel("Categorie:"))
-        sel_row.addWidget(self.cat_dd, 1)
+        sel_row.addWidget(self.cat_dd)
 
         self.sub_dd = QComboBox()
         self.sub_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         sel_row.addWidget(QLabel("Materiaal:"))
-        sel_row.addWidget(self.sub_dd, 1)
+        sel_row.addWidget(self.sub_dd)
 
         self.third_dd = QComboBox()
         self.third_dd.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.third_lbl = QLabel("Subtype:")
         sel_row.addWidget(self.third_lbl)
-        sel_row.addWidget(self.third_dd, 1)
+        sel_row.addWidget(self.third_dd)
+        sel_row.addStretch()
         mat_layout.addLayout(sel_row)
 
         dim_row = QHBoxLayout()
@@ -368,7 +369,7 @@ class UValueTab(QWidget):
         btn_row.addWidget(add_btn)
         btn_row.addStretch()
         layers_outer.addLayout(btn_row)
-        root.addWidget(layers_group)
+        root.addWidget(layers_group, 3)
 
         # Resultaat
         res_group = QGroupBox("Resultaat")
@@ -391,7 +392,7 @@ class UValueTab(QWidget):
         self.u_label.setStyleSheet("font-weight: bold; padding: 8px;")
         self.u_label.setWordWrap(True)
         res_layout.addWidget(self.u_label)
-        root.addWidget(res_group)
+        root.addWidget(res_group, 1)
 
         # Opslaan / Laden knoppen
         io_row = QHBoxLayout()
