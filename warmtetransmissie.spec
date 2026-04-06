@@ -11,13 +11,22 @@ import os
 _ROOT = os.path.abspath(SPECPATH)
 
 a = Analysis(
-    [os.path.join(_ROOT, "app", "__main__.py")],
+    [os.path.join(_ROOT, "run_app.py")],
     pathex=[_ROOT],
     datas=[
         (os.path.join(_ROOT, "material_properties.json"), "."),
         (os.path.join(_ROOT, "tables"), "tables"),
     ],
-    hiddenimports=["heat_calc", "fk_calc"],
+    hiddenimports=[
+        "heat_calc",
+        "fk_calc",
+        "app",
+        "app.config",
+        "app.main_window",
+        "app.u_value_tab",
+        "app.fk_calc_tab",
+        "app.settings_tab",
+    ],
     noarchive=False,
 )
 

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe -m app)",
+      "Bash(echo \"App launched with PID $!\")",
+      "Bash(.venv/Scripts/python.exe -c ':*)",
+      "Bash(.venv/Scripts/python.exe --version)",
+      "Bash(.venv/Scripts/python.exe -W ignore test_script.py)",
+      "Bash(where python:*)",
+      "Bash(python test_formula.py)",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe test_formula.py\")",
+      "Bash(cmd /c \"cd d:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation && .venv\\\\Scripts\\\\python.exe test_formula.py 2>&1\")",
+      "Bash(cmd /c \"cd d:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation && .venv\\\\Scripts\\\\python.exe test_formula.py\")",
+      "Bash(cmd /c \"cd d:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation && .venv\\\\Scripts\\\\python.exe test_formula.py 2> err.txt\")",
+      "Bash(powershell -Command \"cd 'd:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation'; & '.\\\\.venv\\\\Scripts\\\\python.exe' test_formula.py 2>&1; if \\(Test-Path test_formula_output.txt\\) { Get-Content test_formula_output.txt }\")",
+      "Bash(powershell -Command \"cd 'd:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation'; & '.\\\\.venv\\\\Scripts\\\\python.exe' -c 'open\\(\\\\\"ping.txt\\\\\",\\\\\"w\\\\\"\\).write\\(\\\\\"ok\\\\\"\\)'\")",
+      "Bash(powershell -Command \"cd 'd:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation'; & '.\\\\.venv\\\\Scripts\\\\python.exe' -c 'open\\(chr\\(112\\)+chr\\(105\\)+chr\\(110\\)+chr\\(103\\)+chr\\(46\\)+chr\\(116\\)+chr\\(120\\)+chr\\(116\\),chr\\(119\\)\\).write\\(chr\\(111\\)+chr\\(107\\)\\)'\")",
+      "Bash(powershell -Command \"if \\(Test-Path 'd:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation\\\\ping.txt'\\) { Get-Content 'd:\\\\Job\\\\Hobby\\\\GitHub\\\\heat-transmission-calculation\\\\ping.txt' } else { Write-Host 'missing' }\")"
+    ]
+  }
+}

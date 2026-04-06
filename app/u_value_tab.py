@@ -261,23 +261,32 @@ class LayerRow(QFrame):
         r = self.get_r()
 
         if self.mode_cb.currentText() == "Handmatige R":
-            return {"naam": "Handmatig", "d": None, "lam": "—", "R": r}
+            formula = f"{r:.3f}" if r is not None else "?"
+            return {"naam": "Handmatig", "d": None, "lam": "—", "R": r, "formula": formula}
 
         val = raw_value(self.materials, cat, sub, third)
         label = f"{cat} / {sub}" + (f" / {third}" if third else "")
 
         if cat in U_VALUE_CATS:
             u = scalar(val)
-            return {"naam": label, "d": None, "lam": f"(U={u:.2f})", "R": r}
+            formula = f"1 / {u:.2f} = {r:.3f}" if (u and r is not None) else "?"
+            return {"naam": label, "d": None, "lam": f"(U={u:.2f})", "R": r, "formula": formula}
         if cat in R_VALUE_CATS:
-            return {"naam": label, "d": None, "lam": "(R-waarde)", "R": r}
+            formula = f"{r:.3f}" if r is not None else "?"
+            return {"naam": label, "d": None, "lam": "(R-waarde)", "R": r, "formula": formula}
 
         lam = scalar(val)
+        d = self.thickness.value()
+        if lam and lam > 0 and d > 0 and r is not None:
+            formula = f"{d:.3f} / {lam:.4f} = {r:.3f}"
+        else:
+            formula = "?"
         return {
             "naam": label,
-            "d": self.thickness.value(),
+            "d": d,
             "lam": f"{lam:.4f}" if lam else "—",
             "R": r,
+            "formula": formula,
         }
 
     def to_dict(self) -> dict:
@@ -377,7 +386,7 @@ class UValueTab(QWidget):
         self.result_table = QTableWidget()
         self.result_table.setColumnCount(5)
         self.result_table.setHorizontalHeaderLabels(
-            ["Materiaal / Laag", "d [m]", "λ [W/(m·K)]", "R = d/λ [m²·K/W]", "Ri & Re [m²·K/W]"]
+            ["Materiaal / Laag", "d [m]", "λ [W/(m·K)]", "Berekening → R [m²·K/W]", "Ri & Re [m²·K/W]"]
         )
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.Stretch)
@@ -441,12 +450,11 @@ class UValueTab(QWidget):
             r = info["R"]
             d = info["d"]
             d_str = f"{d:.3f}" if isinstance(d, float) else "—"
-            r_str = f"{r:.3f}" if r is not None else "?"
             if isinstance(d, float):
                 total_d += d
             if r is not None:
                 total_rc += r
-            rows.append([info["naam"], d_str, str(info["lam"]), r_str, "—"])
+            rows.append([info["naam"], d_str, str(info["lam"]), info.get("formula", f"{r:.3f}" if r is not None else "?"), "—"])
 
         rows.append(["lucht (buiten)", "—", "—", "—", f"{re:.2f}"])
 
